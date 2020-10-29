@@ -1,0 +1,40 @@
+<launch>
+    <!-- Arguments -->
+  
+    <arg name="map_file" default="$(find navigation1)/maps/map.yaml"/>
+ 
+    <arg name="move_forward_only" default="false"/>
+
+ 
+ 
+
+    <!-- Map server -->
+    <node pkg="map_server" name="map_server" type="map_server" args="$(arg map_file)"/>
+
+    <!-- AMCL -->
+    <include file="$(find  navigation1)/launch/amcl.launch"/>  -->
+
+    <!-- move_base -->
+    <include file="$(find navigation1)/launch/move_base.launch"> 
+ 
+   	 <arg name="move_forward_only" value="$(arg move_forward_only)"/> 
+    
+</include>
+ 
+    <!-- rviz -->
+ 
+ 
+    
+    <!--<include file="$(find rosserial_python)/launch/serial.launch"/> -->
+
+    <!--<include file="$(find rplidar_ros)/launch/rplidar.launch"/> -->
+
+    <!--<include file="$(find robot_localization)/launch/ekf_template.launch"/> -->
+   
+    <!--<include file="$(find pub_odom)/launch/odom.launch"/> -->
+
+    <node pkg="tf" type="static_transform_publisher" name="base_link_to_laser" args="0 0 0 0 0 0 base_link laser 100"/> 
+
+    <node pkg="tf" type="static_transform_publisher" name="map_to_odom" args="0 0 0 0 0 0 map odom 100"/>  
+   <node pkg="tf" type="static_transform_publisher" name="base_link" args="0 0 0 0 0 0 base_footprint base_link  100"/>    
+</launch>
